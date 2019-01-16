@@ -1,3 +1,29 @@
-.account {
-	padding-left: 30px;
+body {
+	font-family: OCR A Std, monospace;
+	color: #4c4b4b;
+	background-color: #efedc4;
 }
+
+.pageHeader {
+	text-align: center;
+}
+
+.user {
+	background-color: #899fc6;
+	margin: 5px;
+	padding: 6px;
+	display: inline-block;
+	float: left;
+	width: 29%;
+	text-align: center;
+}
+
+img {
+  border-radius: 50%;
+}
+
+.account {
+	text-align: center;
+	display: inline-block;
+	float: center;
+	}

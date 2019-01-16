@@ -25,14 +25,18 @@ class Account extends Component {
 	render() {
 		const { isLoaded, account } = this.state;
 		if (account.length === 0) {
-			return(<div className="emptyAccount"></div>)
+			return (
+				<div className="account">
+					No accounts :( :p
+				</div>
+			);
 		} else {
 			return (
 				<div className="account">
-					Account Type: {account.account_type} | 
-					Balance: {account.balance} | 
-					Interest Rate: {account.interest_rate} | 
-					Opened On: {account.account_opened.split("T")[0]}
+					<u>{account.account_type} account </u> <br /> 
+					Balance: ${account.balance} <br />
+					Interest Rate: {account.interest_rate}% <br /> 
+					Opened On: {account.account_opened.split("T")[0]} <br /> <br />
 				</div>
 			);
 		}
@@ -44,14 +48,16 @@ class User extends Component {
 	
 	render() {
 		return (
-			<div className="user">
-				username: {this.props.data.username} | email: {this.props.data.email} <br />
-				accounts: {this.props.data.accounts.map(account => (
-					<ul key={account.id}>
+			<span className="user">
+				<img src={require("./no-img.png")} alt="just imagine :)" height="75" width = "75" /> <br />
+				{this.props.data.username} <br />
+				{this.props.data.email} <br /> <br />
+				{this.props.data.accounts.map(account => (
+					<span key={account}>
 						<Account data={account}/>
-					</ul>
+					</span>
 				))}
-			</div>
+			</span>
 		);
 	}
 }
@@ -82,21 +88,52 @@ class App extends Component {
 		const { isLoaded, users } = this.state; 
 	
 		if (!isLoaded) {
-			return <div>Loading...</div>
+			return <div>Starting up the bank-account-microservice heroku app (this can take a little while sometimes!)</div>
 		}
 	
 		return (
 		<div className="App">
+		<h1 className="pageHeader">bank-account-microservice React Frontend</h1>
 			<ul>
 				{users.map(user => (
-					<li key={user.username}>
+					<ul key={user.username}>
 						<User data={user}/>
-					</li>
+					</ul>
 				))}
+				<span className="user">
+					<img src={require("./no-img.png")} alt="just imagine :)" height="75" width = "75" /> <br />
+					Create a User <br />
+					input email <br /> <br />
+					accounts will go here! <br />
+					<button onClick={() => { postUser() }}>Create a new user!</button>
+				</span>
 			</ul>
 		</div>
 	);
 	}
 }
+
+function postUser() {
+	console.log('reached')
+	fetch("https://cors-anywhere.herokuapp.com/https://bank-account-microservice.herokuapp.com/api/users/", {  
+		method: 'POST',  
+		headers: {  
+		  'Content-Type': 'application/json'  
+		},  
+		body: JSON.stringify({
+		"username": "created_thru_react_fetch_again",
+		"email": "my@fake.email",
+		"accounts": [],
+	  })
+	})
+	.then(function (data) {  
+	  console.log('Request success: ', data);  
+	})  
+	.catch(function (error) {  
+	  console.log('Request failure: ', error);  
+	});
+}
+
+
 
 export default App;
