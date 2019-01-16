@@ -9,7 +9,7 @@ class Account extends Component {
         this.state = {
             account: [],
             isLoaded: false,
-       }
+        }
     }
 	componentDidMount() {
 		fetch('https://cors-anywhere.herokuapp.com/' + this.props.data)
@@ -70,8 +70,42 @@ class App extends Component {
         this.state = {
             users: [],
             isLoaded: false,
-       }
+			username: null,
+			email: null,
+        }
+	   	this.postUser= this.postUser.bind(this);
+		this.handleChange = this.handleChange.bind(this);
     }
+	
+	postUser() {
+		console.log('reached')
+		fetch("https://cors-anywhere.herokuapp.com/https://bank-account-microservice.herokuapp.com/api/users/", {  
+			method: 'POST',  
+			headers: {  
+			  'Content-Type': 'application/json'  
+			},  
+			body: JSON.stringify({
+			"username": this.state.username,
+			"email": this.state.email,
+			"accounts": [],
+		  })
+		})
+		.then(function (data) {  
+		  console.log('Request success: ', data);  
+		})  
+		.catch(function (error) {  
+		  console.log('Request failure: ', error);  
+		});
+		var newUsersArray = this.state.users.concat({url: "", username: this.state.username, email: this.state.email, accounts: []})
+		this.setState({users: newUsersArray});
+	}
+	
+	handleChange({ target }) {
+		this.setState({
+			[target.name]: target.value
+		});
+    }
+
 	
 	componentDidMount() {
         fetch('https://cors-anywhere.herokuapp.com/https://bank-account-microservice.herokuapp.com/api/users/')
@@ -102,10 +136,28 @@ class App extends Component {
 				))}
 				<span className="user">
 					<img src={require("./no-img.png")} alt="just imagine :)" height="75" width = "75" /> <br />
-					Create a User <br />
-					input email <br /> <br />
-					accounts will go here! <br />
-					<button onClick={() => { postUser() }}>Create a new user!</button>
+					Create a User
+					<br />
+					<br />
+					<input 
+						type="text" 
+						name="username" 
+						placeholder="Username" 
+						value={ this.state.topicBox }
+						onChange={ this.handleChange } 
+					/>
+					<br />
+					<br />
+					<input 
+						type="text" 
+						name="email" 
+						placeholder="Email"
+						value={ this.state.payloadBox } 
+						onChange={ this.handleChange } 
+					/> 
+					<br />
+					<br />
+					<button onClick={() => { this.postUser() }}>Create a new user!</button>
 				</span>
 			</ul>
 		</div>
@@ -113,26 +165,6 @@ class App extends Component {
 	}
 }
 
-function postUser() {
-	console.log('reached')
-	fetch("https://cors-anywhere.herokuapp.com/https://bank-account-microservice.herokuapp.com/api/users/", {  
-		method: 'POST',  
-		headers: {  
-		  'Content-Type': 'application/json'  
-		},  
-		body: JSON.stringify({
-		"username": "created_thru_react_fetch_again",
-		"email": "my@fake.email",
-		"accounts": [],
-	  })
-	})
-	.then(function (data) {  
-	  console.log('Request success: ', data);  
-	})  
-	.catch(function (error) {  
-	  console.log('Request failure: ', error);  
-	});
-}
 
 
 
