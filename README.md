@@ -1,6 +1,6 @@
 # bam-frontend
 
-[Hosted on Heroku](https://bam-react-frontend.herokuapp.com/]
+[Hosted on Heroku](https://bam-react-frontend.herokuapp.com/)
 
 A react site built on top of the [bank-account-microservice](https://github.com/blarmon/bank-account-microservice) Django application.  
 
